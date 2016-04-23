@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fight">
+	<resultMap type="com.majiang.entity.Fight" id="fightResult">
+		<result property="id" column="id"/>
+		<result property="gameId" column="gameId"/>
+		<result property="east" column="east"/>
+		<result property="west" column="west"/>
+		<result property="south" column="south"/>
+		<result property="north" column="north"/>
+		<result property="score" column="score"/>
+	</resultMap>
+	
+	<insert id="insertFight" keyProperty="id" useGeneratedKeys="true" parameterType="com.majiang.entity.Fight">
+		insert into fight (gameId,east,west,south,north,score)value(#{gameId},#{east},#{west},#{south},#{north},#{score})
+	</insert>
+	
+	<select id="getFightByKey" parameterType="int" resultMap="fightResult">
+		select * from fight where id = #{id}
+	</select>
+	
+	<select id="getFightByGameId" parameterType="int" resultMap="fightResult">
+		select * from fight where gameId = #{gameId}
+	</select>
+	<select id="getSumScore" parameterType="int" resultType="map">
+		select sum(east) as east,sum(west) as west,sum(north) as north ,sum(south) as south from fight where gameId = #{gameId}
+	</select>
+	
+	<update id="updateFight" parameterType="com.majiang.entity.Fight">
+		update fight set
+		gameId = #{gameId},
+		east = #{east},
+		west = #{west},
+		south = #{south},
+		north = #{north},
+		score = #{score}
+		where id = #{id}
+	</update>
+</mapper>

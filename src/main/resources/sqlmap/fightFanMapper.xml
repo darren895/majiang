@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fightFan">
+	<resultMap type="com.majiang.entity.FightFan" id="fightFanResult">
+		<result column="id" property="id"/>
+		<result column="fanId" property="fanId"/>
+		<result column="fightId" property="fightId"/>
+		<result column="userId" property="userId"/>
+	</resultMap>
+	<insert id="insertFightFan" useGeneratedKeys="true" keyProperty="id" parameterType="com.majiang.entity.FightFan">
+		insert into fight_fan(fanId,fightId,userId) values(#{fanId},#{fightId},#{userId})
+	</insert>
+	
+	<select id="getFightFanByFight" parameterType="int" resultMap="fightFanResult">
+		select id,fanId,fightId,userId from fight_fan where fightId = #{id}
+	</select>
+	
+	<delete id="clearFightFanByFight" parameterType="int">
+		delete from fight_fan where fightId = #{id}
+	</delete>
+	
+	<resultMap type="com.majiang.dto.UserFanDTO" id="userFanDTOResult">
+		<result column="fanId" property="fanId"/>
+		<result column="count" property="count"/>
+	</resultMap>
+	
+	<select id="countUserFan" resultMap="userFanDTOResult" parameterType="int">
+		 select fanId, count(fanId) as count from fight_fan where userId = #{id} group by fanId order by count(fanId) desc;
+	</select>
+</mapper>

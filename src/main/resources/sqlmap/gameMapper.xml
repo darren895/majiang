@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="game">
+	<resultMap type="com.majiang.entity.Game" id="gameResult">
+		<result property="id" column="id"/>
+		<result property="eastId" column="eastId"/>
+		<result property="westId" column="westId"/>
+		<result property="northId" column="northId"/>
+		<result property="southId" column="southId"/>
+		<result property="startTime" column="startTime" javaType="java.util.Date"/>
+	</resultMap>
+	
+	<insert id="insertGame" useGeneratedKeys="true" keyProperty="id" parameterType="com.majiang.entity.Game">
+		insert into game (eastId,westId,northId,southId,startTime) values(#{eastId},#{westId},#{northId},#{southId},#{startTime})
+	</insert>
+	
+	<select id="getGame" resultMap="gameResult" parameterType="int">
+		select id,eastId,westId,northId,southId,startTime from game where id = #{id}
+	</select>
+	
+	<select id="getGamesByPage" resultMap="gameResult" parameterType="map">
+		select id,eastId,westId,northId,southId,startTime from game order by id desc limit #{start},#{size}
+	</select> 
+
+</mapper>
