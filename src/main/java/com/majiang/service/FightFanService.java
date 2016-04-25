@@ -1,6 +1,5 @@
 package com.majiang.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,26 +7,28 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.majiang.dao.FightFanDao;
 import com.majiang.dto.UserFanDTO;
 import com.majiang.entity.Fan;
 import com.majiang.entity.FightFan;
+import com.majiang.mapper.FightFanMapper;
 
 @Service
 public class FightFanService {
 	
+//	@Autowired
+//	private FightFanDao fightFanDao;
 	@Autowired
-	private FightFanDao fightFanDao;
+	private FightFanMapper fightFanMapper;
 	
 	@Autowired
 	private FanService fanService;
 
 	public void insertFightFan(FightFan fightFan){
-		fightFanDao.insertFightFan(fightFan);
+		fightFanMapper.insertFightFan(fightFan);
 	}
 	
 	public List<FightFan> getFightFanByFight(int fightId){
-		return fightFanDao.getFightFanByFight(fightId);
+		return fightFanMapper.getFightFanByFight(fightId);
 	}
 	
 	public Map<Integer,Integer> getFanMapByFight(int fightId){
@@ -46,11 +47,11 @@ public class FightFanService {
 	}
 	
 	public void clearFightFanByFight(int fightId){
-		this.fightFanDao.clearFightFan(fightId);
+		this.fightFanMapper.clearFightFanByFight(fightId);
 	}
 	
 	public List<UserFanDTO> getUserFanDTO(int userId){
-		List<UserFanDTO> userFanDTOs = this.fightFanDao.getUserFanDTO(userId);
+		List<UserFanDTO> userFanDTOs = this.fightFanMapper.countUserFan(userId);
 		UserFanDTO removefan = null;
 		if(userFanDTOs != null && !userFanDTOs.isEmpty()){
 			for (UserFanDTO userFanDTO : userFanDTOs) {

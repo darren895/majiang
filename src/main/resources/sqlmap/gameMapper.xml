@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="game">
+<mapper namespace="com.majiang.mapper.GameMapper">
 	<resultMap type="com.majiang.entity.Game" id="gameResult">
 		<result property="id" column="id"/>
 		<result property="eastId" column="eastId"/>
@@ -10,7 +10,7 @@
 		<result property="startTime" column="startTime" javaType="java.util.Date"/>
 	</resultMap>
 	
-	<insert id="insertGame" useGeneratedKeys="true" keyProperty="id" parameterType="com.majiang.entity.Game">
+	<insert id="insertGame" useGeneratedKeys="true" keyProperty="id">
 		insert into game (eastId,westId,northId,southId,startTime) values(#{eastId},#{westId},#{northId},#{southId},#{startTime})
 	</insert>
 	

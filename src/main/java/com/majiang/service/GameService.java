@@ -4,20 +4,22 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.majiang.dao.GameDao;
 import com.majiang.entity.Game;
+import com.majiang.mapper.GameMapper;
 
 @Service
 public class GameService {
-	@Autowired
-	private GameDao gameDao;
+//	@Autowired
+//	private GameDao gameDao;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private GameMapper gameMapper;
 	
 	public void saveGame(Game game){
 		if(game.getId()==0){
 			saveGameUser(game);
-			gameDao.insertGame(game);
+			gameMapper.insertGame(game);
 		}
 	}
 	
@@ -44,14 +46,14 @@ public class GameService {
 	}
 	
 	public Game getGame(int id){
-		Game game = gameDao.getGame(id);
+		Game game = gameMapper.getGame(id);
 		fillGame(game);
 		return game;
 	}
 	
 	public List<Game> getGames(int page,int size){
 		int start = (page-1) * size;
-		List<Game> games = gameDao.getGames(start, size);
+		List<Game> games = gameMapper.getGamesByPage(start, size);
 		if(games != null && !games.isEmpty()){
 			for (Game game : games) {
 				fillGame(game);

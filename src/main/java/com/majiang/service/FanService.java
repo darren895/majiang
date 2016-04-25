@@ -8,19 +8,22 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.majiang.dao.FanDao;
 import com.majiang.entity.Fan;
+import com.majiang.mapper.FanMapper;
 @Service
 public class FanService {
 
+//	@Autowired
+//	private FanDao fanDao;
+	
 	@Autowired
-	private FanDao fanDao;
+	private FanMapper fanMapper;
 	
 	private List<Fan> fans;
 	
 	public List<Fan> getAll(){
 		if(fans ==null){
-			fans = fanDao.getAll();
+			fans = fanMapper.getAll();
 		}
 		return fans;
 	}
@@ -57,7 +60,7 @@ public class FanService {
 		if(fanMap.containsKey(id)){
 			return fanMap.get(id);
 		}else{
-			Fan fan = this.fanDao.getFanbyId(id);
+			Fan fan = this.fanMapper.getFanById(id);
 			if(fan!= null){
 				fanMap.put(id, fan);
 			}

@@ -17,7 +17,7 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task.xsd
            http://www.springframework.org/schema/mvc
-		   http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd" default-autowire="byName">
+		   http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd" >
 	<context:property-placeholder location="classpath:/jdbc.properties" ignore-unresolvable="true"/> 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driver}"></property>
@@ -41,9 +41,15 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	   <property name="dataSource" ref="dataSource" />
 	   <property  name="configLocation"  value="classpath:/sqlmap/sqlMapConfig.xml"/>
+	   <property name="mapperLocations" value="classpath:/sqlmap/*Mapper.xml"/>
+	   <property name="typeAliasesPackage" value="com.majiang.entity;com.majiang.dto;"/>
 	</bean>
 	<bean id="sqlSession"  class="org.mybatis.spring.SqlSessionTemplate">
       <constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
-	<context:component-scan base-package="com.majiang.dao" />
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.majiang.mapper"/>
+    </bean>
+
 </beans>

@@ -7,32 +7,35 @@ import org.springframework.stereotype.Service;
 
 import com.majiang.dao.UserDao;
 import com.majiang.entity.User;
+import com.majiang.mapper.UserMapper;
 
 @Service
 public class UserService {
+//	@Autowired
+//	private UserDao userDao;
 	@Autowired
-	private UserDao userDao;
+	private UserMapper userMapper;
 	
 	/**
-	 * ¸ù¾ÝÃû³ÆÌî³äÓÃ»§
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
 	 * @param user
 	 */
 	public void fillUser(User user){
-		User newUser = this.userDao.getUserByName(user.getName());
+		User newUser = this.userMapper.getUserByName(user.getName());
 		if(newUser != null){
 			user.setId(newUser.getId());
 		}else{
-			this.userDao.insertUser(user);
+			this.userMapper.insertUser(user);
 		}
 	}
 	
 	public User getUser(int id){
-		return this.userDao.getUserById(id);
+		return this.userMapper.getUserById(id);
 	}
 	
 	public List<User> getUserByPage(int page,int size){
 		int start = (page-1) * size;
-		return userDao.getUsersByPage(start, size);
+		return userMapper.getUsersByPage(start, size);
 	}
 
 }

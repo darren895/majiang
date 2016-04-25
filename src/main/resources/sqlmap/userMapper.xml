@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="user">
+<mapper namespace="com.majiang.mapper.UserMapper">
 	<resultMap type="com.majiang.entity.User" id="userMap">
 		<result column="id" property="id"/>
 		<result column="name" property="name"/>
 	</resultMap>
-	<insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.majiang.entity.User">
+	<insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
 		insert into t_user (name)values(#{name})
 	</insert>
 	
 	<select id="getUserByName" parameterType="String" resultMap="userMap">
-		select id,name from t_user where name = #{value} 
+		select id,name from t_user where name = #{name} 
 	</select>
 	
 	<select id="getUserById" parameterType="int" resultMap="userMap">
-		select id,name from t_user where id = #{value} 
+		select id,name from t_user where id = #{id} 
 	</select>
 	
 	<select id="getUsersByPage" parameterType="map" resultMap="userMap">

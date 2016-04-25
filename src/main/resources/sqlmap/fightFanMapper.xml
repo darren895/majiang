@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="fightFan">
+<mapper namespace="com.majiang.mapper.FightFanMapper">
 	<resultMap type="com.majiang.entity.FightFan" id="fightFanResult">
 		<result column="id" property="id"/>
 		<result column="fanId" property="fanId"/>
 		<result column="fightId" property="fightId"/>
 		<result column="userId" property="userId"/>
 	</resultMap>
-	<insert id="insertFightFan" useGeneratedKeys="true" keyProperty="id" parameterType="com.majiang.entity.FightFan">
+	<insert id="insertFightFan" useGeneratedKeys="true" keyProperty="id">
 		insert into fight_fan(fanId,fightId,userId) values(#{fanId},#{fightId},#{userId})
 	</insert>
 	
