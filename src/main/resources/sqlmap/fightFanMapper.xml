@@ -15,7 +15,7 @@
 		select id,fanId,fightId,userId from fight_fan where fightId = #{id}
 	</select>
 	
-	<delete id="clearFightFanByFight" parameterType="int">
+	<delete id="clearFightFanByFight">
 		delete from fight_fan where fightId = #{id}
 	</delete>
 	

@@ -13,7 +13,7 @@
 		select * from fan order by score desc
 	</select>
 	
-	<select id="getFanById" resultMap="fanResult" parameterType="int">
+	<select id="getFanById" resultMap="fanResult">
 		select * from fan where id = #{id}
 	</select>
 </mapper>
