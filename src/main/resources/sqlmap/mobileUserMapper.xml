@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.majiang.mapper.MobileUserMapper">
+	<resultMap type="com.majiang.entity.MobileUser" id="mobileUserResult">
+		<result column="uuid" property="uuid"/>
+		<result column="userId" property="userId"/>
+	</resultMap>
+	
+	<select id="getMobileUser" parameterType="String">
+		select uuid,userId from mobile_user where id = #{uuid}
+	</select>
+	
+	<insert id="insertMobileUser" parameterType="com.majiang.entity.MobileUser">
+		insert into mobile_user (uuid,userId) values(#{uuid},#{userId})
+	</insert>
+	
+	<update id="updateMobileUser" parameterType="com.majiang.entity.MobileUser">
+		update mobile_user set
+		userId = #{userId} where uuid=#{uuid}
+	</update>
+</mapper>

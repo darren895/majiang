@@ -6,8 +6,23 @@
 		<result column="name" property="name"/>
 	</resultMap>
 	<insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
-		insert into t_user (name)values(#{name})
+		insert into t_user (name
+		<if test="password != null">,password</if>
+		)values(#{name}<if test="password != null">,#{password}</if>)
 	</insert>
+	
+	<update id="updateUser" parameterType="com.majiang.entity.User" >
+		update t_user
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="password != null">
+				password = #{password}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
 	
 	<select id="getUserByName" parameterType="String" resultMap="userMap">
 		select id,name from t_user where name = #{name} 

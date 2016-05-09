@@ -15,4 +15,6 @@ public interface UserMapper {
 	User getUserById(@Param("id")int id);
 	
 	List<User> getUsersByPage(@Param("start")int start,@Param("size")int size);
+	
+	int updateUser(User user);
 }
