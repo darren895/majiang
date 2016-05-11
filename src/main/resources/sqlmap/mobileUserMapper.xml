@@ -6,8 +6,8 @@
 		<result column="userId" property="userId"/>
 	</resultMap>
 	
-	<select id="getMobileUser" parameterType="String">
-		select uuid,userId from mobile_user where id = #{uuid}
+	<select id="getMobileUser" resultMap="mobileUserResult" parameterType="String" >
+		select uuid,userId from mobile_user where uuid = #{uuid}
 	</select>
 	
 	<insert id="insertMobileUser" parameterType="com.majiang.entity.MobileUser">
