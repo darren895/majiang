@@ -1,15 +1,21 @@
 package com.majiang.service;
 
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import com.majiang.entity.MobileUser;
+import com.majiang.dto.BaseMobileDTO;
+import com.majiang.dto.LoginDTO;
+import com.majiang.entity.MobileLogin;
 import com.majiang.entity.User;
-import com.majiang.mapper.MobileUserMapper;
+import com.majiang.mapper.MobileLoginMapper;
 import com.majiang.mapper.UserMapper;
 import com.majiang.util.RSAUtil;
+import com.majiang.util.SHAUtil;
 
 @Service
 public class UserService {
@@ -18,7 +24,7 @@ public class UserService {
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
-	private MobileUserMapper mobileUserMapper;
+	private MobileLoginMapper mobileLoginMapper;
 	
 	/**
 	 * ����������û�
@@ -42,22 +48,71 @@ public class UserService {
 		return userMapper.getUsersByPage(start, size);
 	}
 	
-	public User getUser(String uuid){
-		MobileUser mobileUser = this.mobileUserMapper.getMobileUser(uuid);
-		if(mobileUser == null || mobileUser.getUserId().equals(0)){
+	public User regeditUser(User user){
+		if(user == null || StringUtils.isEmpty(user.getName())){
 			return null;
 		}
-		User user = getUser(mobileUser.getUserId());
+		User oldUser = this.userMapper.getUserByNameWithPassword(user.getName());
+		if(oldUser == null){
+			oldUser = new User();
+			oldUser.setName(user.getName());
+			this.userMapper.insertUser(oldUser);
+		}
+		if(oldUser.getPassword() != null){
+			return null;
+		}
+		String password = user.getPassword();
+		password = RSAUtil.decrypt(password);
+		password = SHAUtil.shaEncode(password);
+		user.setPassword(password);
+		user.setId(oldUser.getId());
+		this.userMapper.updateUser(user);
 		return user;
 	}
 	
-	public boolean checkToken(String token){
-		MobileUser tokenMobile = RSAUtil.encryptToken(token);
-		if(tokenMobile == null){
-			return false;
+	public String login(LoginDTO loginDTO){
+		if(loginDTO == null || StringUtils.isEmpty(loginDTO.getName())||StringUtils.isEmpty(loginDTO.getPassword())){
+			return null;
 		}
-		MobileUser mobileUser = this.mobileUserMapper.getMobileUser(tokenMobile.getUuid());
-		return tokenMobile.equals(mobileUser);
+		User user = this.userMapper.getUserByNameWithPassword(loginDTO.getName());
+		if(user == null){
+			return null;
+		}
+		String password = loginDTO.getPassword();
+		password = RSAUtil.decrypt(password);
+		password = SHAUtil.shaEncode(password);
+		if(!password.equals(user.getPassword())){
+			return null;
+		}
+		SecureRandom random = new SecureRandom();
+		random.setSeed(System.nanoTime());
+		long seed = random.nextLong();
+		String token = SHAUtil.shaEncode(seed+"");
+		MobileLogin mobileLogin = this.mobileLoginMapper.getMobileLoginWithoutStatus(loginDTO.getUuid());
+		if(mobileLogin == null){
+			mobileLogin = new MobileLogin();
+			mobileLogin.setUuid(loginDTO.getUuid());
+			mobileLogin.setStatus(1);
+			mobileLogin.setUserId(user.getId());
+			mobileLogin.setTokenKey(token);
+			mobileLogin.setLoginTime(new Date());
+			this.mobileLoginMapper.insertMobileLogin(mobileLogin);
+		}else{
+			mobileLogin.setStatus(1);
+			mobileLogin.setTokenKey(token);
+			mobileLogin.setUserId(user.getId());
+			mobileLogin.setLoginTime(new Date());
+			this.mobileLoginMapper.updateMobileLogin(mobileLogin);
+		}
+		return token;
+	}
+	
+	public User getUser(BaseMobileDTO baseMobileDTO){
+		MobileLogin mobileLogin = this.mobileLoginMapper.getMobileLogin(baseMobileDTO.getUuid());
+		if(mobileLogin == null){
+			return null;
+		}
+		return getUser(mobileLogin.getUserId());
 	}
 
 }

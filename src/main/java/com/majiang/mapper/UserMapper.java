@@ -17,4 +17,6 @@ public interface UserMapper {
 	List<User> getUsersByPage(@Param("start")int start,@Param("size")int size);
 	
 	int updateUser(User user);
+	
+	User getUserByNameWithPassword(@Param("name")String name);
 }

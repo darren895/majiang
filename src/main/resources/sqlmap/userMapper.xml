@@ -24,15 +24,23 @@
 		where id = #{id}
 	</update>
 	
+	<sql id="userSql">
+		id,name
+	</sql>
+	
 	<select id="getUserByName" parameterType="String" resultMap="userMap">
-		select id,name from t_user where name = #{name} 
+		select <include refid="userSql" /> from t_user where name = #{name} 
+	</select>
+	
+	<select id="getUserByNameWithPassword" parameterType="String" resultType="com.majiang.entity.User">
+		select id,name,password from t_user where name = #{name} 
 	</select>
 	
 	<select id="getUserById" parameterType="int" resultMap="userMap">
-		select id,name from t_user where id = #{id} 
+		select <include refid="userSql" />d from t_user where id = #{id} 
 	</select>
 	
 	<select id="getUsersByPage" parameterType="map" resultMap="userMap">
-		select id,name from t_user limit #{start},#{size} 
+		select <include refid="userSql" /> from t_user limit #{start},#{size} 
 	</select>
 </mapper>

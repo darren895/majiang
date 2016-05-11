@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.majiang.mapper.MobileLoginMapper">
+	<resultMap type="com.majiang.entity.MobileLogin" id="mobileLoginResult">
+		<result column="uuid" property="uuid"/>
+		<result property="loginTime" column="loginTime"/>
+		<result property="tokenKey" column="tokenKey"/>
+		<result property="status" column="status"/>
+		<result column="userId" property="userId"/>
+	</resultMap>
+	
+	<insert id="insertMobileLogin" parameterType="com.majiang.entity.MobileLogin">
+		insert into mobile_login (uuid,userId,tokenKey,status,loginTime)values(#{uuid},#{userId},#{tokenKey},#{status},#{loginTime})
+	</insert>
+	
+	<update id="updateMobileLogin" parameterType="com.majiang.entity.MobileLogin">
+		update mobile_login
+		<set>
+			<if test="userId != null and userId > 0">
+				userId = #{userId},
+			</if>
+			<if test="tokenKey != null">
+				tokenKey = #{tokenKey},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="userId != null">
+				userId = #{userId}
+			</if>
+		</set>
+		where uuid = #{uuid}
+	</update>
+	
+	<select id="getMobileLogin" resultMap="mobileLoginResult">
+		select uuid,userId,tokenKey,status,userId where uuid = #{uuid} and status = 1
+	</select>
+	
+	<select id="getMobileLoginWithoutStatus" resultMap="mobileLoginResult">
+		select uuid,userId,tokenKey,status,userId where uuid = #{uuid}
+	</select>
+</mapper>
