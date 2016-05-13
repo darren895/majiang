@@ -11,13 +11,16 @@ import com.majiang.exception.UnLoginException;
 public class BaseController {
 
 	@ResponseBody
-	@ExceptionHandler
+	@ExceptionHandler()
 	public Map<String, Object> exc(Exception ex){
+		Map<String, Object> result = new HashMap<String, Object>();
 		if(ex instanceof UnLoginException){
-			Map<String, Object> result = new HashMap<String, Object>();
 			result.put("error", true);
 			result.put("errorMessage", "请登录");
+		}else{
+			result.put("error", true);
+			result.put("errorMessage", "系统出错");
 		}
-		return null;
+		return result;
 	}
 }

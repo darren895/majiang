@@ -37,7 +37,7 @@
 	</select>
 	
 	<select id="getUserById" parameterType="int" resultMap="userMap">
-		select <include refid="userSql" />d from t_user where id = #{id} 
+		select <include refid="userSql" /> from t_user where id = #{id} 
 	</select>
 	
 	<select id="getUsersByPage" parameterType="map" resultMap="userMap">

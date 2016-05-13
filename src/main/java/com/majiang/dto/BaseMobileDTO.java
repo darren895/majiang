@@ -39,5 +39,11 @@ public class BaseMobileDTO implements Serializable {
 		this.uuid = uuid;
 	}
 	
+	public BaseMobileDTO() {
+	}
+
+	public BaseMobileDTO(String uuid) {
+		this.uuid = uuid;
+	}
 	
 }

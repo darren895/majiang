@@ -28,15 +28,18 @@
 			<if test="userId != null">
 				userId = #{userId}
 			</if>
+			<if test="loginTime != null">
+				loginTime = #{loginTime}
+			</if>
 		</set>
 		where uuid = #{uuid}
 	</update>
 	
 	<select id="getMobileLogin" resultMap="mobileLoginResult">
-		select uuid,userId,tokenKey,status,userId where uuid = #{uuid} and status = 1
+		select uuid,userId,tokenKey,status,userId from mobile_login where uuid = #{uuid} and status = 1
 	</select>
 	
 	<select id="getMobileLoginWithoutStatus" resultMap="mobileLoginResult">
-		select uuid,userId,tokenKey,status,userId where uuid = #{uuid}
+		select uuid,userId,tokenKey,status,userId from mobile_login where uuid = #{uuid}
 	</select>
 </mapper>

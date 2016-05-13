@@ -114,5 +114,12 @@ public class UserService {
 		}
 		return getUser(mobileLogin.getUserId());
 	}
+	
+	public boolean unLogin(String uuid){
+		MobileLogin mobileLogin = new MobileLogin();
+		mobileLogin.setUuid(uuid);
+		mobileLogin.setStatus(0);
+		return this.mobileLoginMapper.updateMobileLogin(mobileLogin) > 0;
+	}
 
 }
