@@ -3,8 +3,13 @@ package com.majiang.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Date;
 
 public class SHAUtil {
+	
+	public static void main(String[] args) {
+		System.out.println(shaEncode("00112233-4455-6677-8899-AABBCCDDEEFF"+1463037615108l+"bf615cf6bcbeb947365e90eafa3960152ad21dea"));
+	}
 	
 	public static String shaEncode(String resource) {
 		try {
@@ -13,7 +18,7 @@ public class SHAUtil {
 			byte[] shaByte = sha.digest(resByte);
 			return byte2HexString(shaByte);
 		} catch (NoSuchAlgorithmException e) {
-			return null;
+			return null; 
 		}
 	}
 	

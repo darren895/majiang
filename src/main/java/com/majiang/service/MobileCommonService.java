@@ -14,20 +14,20 @@ public class MobileCommonService {
 	@Autowired
 	private MobileLoginMapper mobileLoginMapper;
 
-	public boolean verifyToken(BaseMobileDTO baseMobileDTO) {
+	public int verifyToken(BaseMobileDTO baseMobileDTO) {
 		if (baseMobileDTO == null || baseMobileDTO.getUuid() == null || baseMobileDTO.getTime() == null
 				|| baseMobileDTO.getToken() == null) {
-			return false;
+			return 0;
 		}
 		MobileLogin mobileLogin = this.mobileLoginMapper.getMobileLogin(baseMobileDTO.getUuid());
 		if(mobileLogin == null){
-			return false;
+			return 0;
 		}
 		String shaToken = baseMobileDTO.getUuid()+baseMobileDTO.getTime()+mobileLogin.getTokenKey();
 		try {
 			shaToken = SHAUtil.shaEncode(shaToken);
 		} catch (Exception e) {
 		}
-		return baseMobileDTO.getToken().equals(shaToken);
+		return baseMobileDTO.getToken().equals(shaToken)?mobileLogin.getUserId():0;
 	}
 }
