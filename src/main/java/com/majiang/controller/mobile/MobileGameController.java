@@ -12,4 +12,5 @@ public class MobileGameController extends BaseController {
 
 	@Autowired
 	private GameService gameService;
+
 }
